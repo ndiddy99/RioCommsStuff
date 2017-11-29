@@ -22,8 +22,7 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
-	SerialSubsystem serialSys=new SerialSubsystem();
-
+	public static SerialSubsystem serialSys;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -32,6 +31,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		serialSys=new SerialSubsystem();
 	}
 
 	/**
@@ -100,6 +100,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
 	}
 
 	/**

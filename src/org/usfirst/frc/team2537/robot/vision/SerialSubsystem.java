@@ -13,6 +13,7 @@ public class SerialSubsystem extends Subsystem {
 	public void initDefaultCommand() {
 		serial = new SerialPort(BAUDRATE, Port.kMXP);
 		protocolHandler=new ProtocolHandler();
+		setDefaultCommand(new ReadSerialCommand()); //automatically adds packets to the buffer
 	}
 	
 	public void addToBuffer() { //should run periodically

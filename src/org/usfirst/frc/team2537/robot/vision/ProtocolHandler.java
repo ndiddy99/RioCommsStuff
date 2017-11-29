@@ -19,7 +19,7 @@ public class ProtocolHandler {
 		for (int i=0; i < stringToAppend.length();i++) {
 			char charToAppend=stringToAppend.charAt(i);
 			if (charToAppend=='<') {  //is current character opening character?
-				//buffer="<";			//if yes, reset the buffer
+				buffer="";			//if yes, reset the buffer
 			}
 			else if (charToAppend=='>') { //is current char closing character?
 				//buffer+='>';		//if yes, buffer is ready for program to read
