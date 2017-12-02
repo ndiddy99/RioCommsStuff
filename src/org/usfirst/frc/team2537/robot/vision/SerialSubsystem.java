@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.SerialPort.Port;
 
 public class SerialSubsystem extends Subsystem {
 	public static SerialPort serial;
+	public final boolean DEBUG=true;
 	final int BAUDRATE = 38400;
 	ProtocolHandler protocolHandler;
 	VisionPacketHandler visionPacketHandler;
@@ -13,6 +14,7 @@ public class SerialSubsystem extends Subsystem {
 	public void initDefaultCommand() {
 		serial = new SerialPort(BAUDRATE, Port.kMXP);
 		protocolHandler=new ProtocolHandler();
+		visionPacketHandler=new VisionPacketHandler();
 		setDefaultCommand(new ReadSerialCommand()); //automatically adds packets to the buffer
 	}
 	
@@ -29,6 +31,6 @@ public class SerialSubsystem extends Subsystem {
 			return new VisionPacket[0];
 	}
 	public void sendVisionPacket(VisionPacket[] packetsToSend) {
-		visionPacketHandler.encodeVisionPacket(packetsToSend);
+		serial.writeString(visionPacketHandler.encodeVisionPacket(packetsToSend));
 	}
 }

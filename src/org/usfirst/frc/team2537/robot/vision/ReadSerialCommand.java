@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2537.robot.vision;
 
+import java.util.Arrays;
+
 import org.usfirst.frc.team2537.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,6 +22,9 @@ public class ReadSerialCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.serialSys.addToBuffer();
+    	if (Robot.serialSys.DEBUG)
+    		System.out.println(Arrays.toString(Robot.serialSys.getVisionPacket()));
+    		Robot.serialSys.sendVisionPacket(Robot.serialSys.getVisionPacket());
     }
 
     // Make this return true when this Command no longer needs to run execute()

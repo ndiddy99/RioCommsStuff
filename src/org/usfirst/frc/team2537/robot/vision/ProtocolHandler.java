@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2537.robot.vision;
 
+import org.usfirst.frc.team2537.robot.Robot;
+
 public class ProtocolHandler {
 	String buffer;
 	String lastCompletedString;
@@ -27,6 +29,8 @@ public class ProtocolHandler {
 			}
 			else 				//otherwise, add current char to the buffer
 				buffer+=charToAppend;
+				if (Robot.serialSys.DEBUG)
+					System.out.println("adding char to buffer: "+charToAppend);
 		}
 	}
 	public String getLastString() {
