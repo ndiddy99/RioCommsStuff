@@ -9,28 +9,31 @@ public class SerialSubsystem extends Subsystem {
 	public final boolean DEBUG=true;
 	final int BAUDRATE = 38400;
 	ProtocolHandler protocolHandler;
-	VisionPacketHandler visionPacketHandler;
 
 	public void initDefaultCommand() {
 		serial = new SerialPort(BAUDRATE, Port.kMXP);
 		protocolHandler=new ProtocolHandler();
-		visionPacketHandler=new VisionPacketHandler();
 		setDefaultCommand(new ReadSerialCommand()); //automatically adds packets to the buffer
 	}
 	
 	public void addToBuffer() { //should run periodically
 		if (serial.getBytesReceived() > 0) {
-			protocolHandler.addToBuffer(serial.readString());
-			serial.flush();
+			try { //wrapped in a try/catch because if the pi inits before the rio it'll crash otherwise
+				protocolHandler.addToBuffer(serial.readString());
+				serial.flush();
+			}
+			catch (Exception e) {
+				System.out.println("serial exception");
+			}
 		}
 	}
-	public VisionPacket[] getVisionPacket() {
+	public Point[] getVisionPacket() {
 		if (!protocolHandler.getLastString().equals("")) 
-			return visionPacketHandler.decodeVisionPacket(protocolHandler.getLastString());
+			return VisionPacketHandler.decodeVisionPacket(protocolHandler.getLastString());
 		else
-			return new VisionPacket[0];
+			return new Point[0];
 	}
-	public void sendVisionPacket(VisionPacket[] packetsToSend) {
-		serial.writeString(visionPacketHandler.encodeVisionPacket(packetsToSend));
+	public void sendVisionPacket(Point[] packetsToSend) {
+		serial.writeString(VisionPacketHandler.encodeVisionPacket(packetsToSend));
 	}
 }

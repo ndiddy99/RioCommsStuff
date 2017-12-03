@@ -2,9 +2,11 @@ package org.usfirst.frc.team2537.robot.vision;
 
 import java.util.ArrayList;
 
+import org.usfirst.frc.team2537.robot.Robot;
+
 public class VisionPacketHandler {
 
-	public String encodeVisionPacket(VisionPacket[] visionPackets) {
+	public static String encodeVisionPacket(Point[] visionPackets) {
 		String stringToOutput="<";
 		for (int i=0; i < visionPackets.length; i++) {
 			stringToOutput+=visionPackets[i].outputPacket();
@@ -12,18 +14,21 @@ public class VisionPacketHandler {
 		stringToOutput+=">";
 		return stringToOutput;
 	}
-	public VisionPacket[] decodeVisionPacket(String packetToDecode) {
-		ArrayList<VisionPacket>visionPackets = new ArrayList<>();
+	public static Point[] decodeVisionPacket(String packetToDecode) {
+		if (Robot.serialSys.DEBUG)
+			System.out.println("original string: "+packetToDecode);
+		ArrayList<Point>visionPackets = new ArrayList<>();
 		
-		while(packetToDecode.contains("!")) {
-			String name = packetToDecode.substring(0, packetToDecode.indexOf(":"));
-			String stringValue = packetToDecode.substring(packetToDecode.indexOf(":") + 1, packetToDecode.indexOf("!"));
-			int value = Integer.valueOf(stringValue);
-			VisionPacket visionPacketObject = new VisionPacket(name, value);
+		while(packetToDecode.contains("|")) {
+			String stringX = packetToDecode.substring(0, packetToDecode.indexOf(":"));
+			String stringY = packetToDecode.substring(packetToDecode.indexOf(":") + 1, packetToDecode.indexOf("|"));
+			int x=Integer.valueOf(stringX);
+			int y = Integer.valueOf(stringY);
+			Point visionPacketObject = new Point(x, y);
 			visionPackets.add(visionPacketObject);
-			packetToDecode=packetToDecode.substring(packetToDecode.indexOf("!")+1, packetToDecode.length());
+			packetToDecode=packetToDecode.substring(packetToDecode.indexOf("|")+1, packetToDecode.length());
 			
 		}
-		return visionPackets.toArray(new VisionPacket[visionPackets.size()]);
+		return visionPackets.toArray(new Point[visionPackets.size()]);
 	}
 }

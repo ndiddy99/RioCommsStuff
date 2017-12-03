@@ -11,13 +11,13 @@ public class ProtocolHandler {
 	}
 	/*
 	 * Example packet of the protocol we're using:
-	 *  <Name1:1!Name2:2!Name3:3!>
+	 *  <Val1:Val2|Val3:Val4|Val5:Val6|>
 	 *  pretty much, the greater than/less than symbols frame the packets
-	 *  the "Namex" text is the variable name(can be any string)
-	 *  the numbers are the values stored by the values
-	 *  the exclamation points separate values
+	 *  the val1, etc text is values (must be ints)
+	 *  the pipes separate values
 	 */
 	public void addToBuffer(String stringToAppend) {
+
 		for (int i=0; i < stringToAppend.length();i++) {
 			char charToAppend=stringToAppend.charAt(i);
 			if (charToAppend=='<') {  //is current character opening character?
@@ -29,8 +29,8 @@ public class ProtocolHandler {
 			}
 			else 				//otherwise, add current char to the buffer
 				buffer+=charToAppend;
-				if (Robot.serialSys.DEBUG)
-					System.out.println("adding char to buffer: "+charToAppend);
+				//if (Robot.serialSys.DEBUG)
+				//	System.out.println("adding char to buffer: "+charToAppend);
 		}
 	}
 	public String getLastString() {
