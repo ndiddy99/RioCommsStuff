@@ -14,6 +14,7 @@ public class SerialSubsystem extends Subsystem {
 		serial = new SerialPort(BAUDRATE, Port.kMXP);
 		protocolHandler=new ProtocolHandler();
 		setDefaultCommand(new ReadSerialCommand()); //automatically adds packets to the buffer
+		serial.flush();
 	}
 	
 	public void addToBuffer() { //should run periodically
@@ -24,6 +25,7 @@ public class SerialSubsystem extends Subsystem {
 			}
 			catch (Exception e) {
 				System.out.println("serial exception");
+				protocolHandler=new ProtocolHandler();
 			}
 		}
 	}

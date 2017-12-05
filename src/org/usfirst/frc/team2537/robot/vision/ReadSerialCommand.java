@@ -22,9 +22,12 @@ public class ReadSerialCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.serialSys.addToBuffer();
-    	if (Robot.serialSys.DEBUG)
+    	if (Robot.serialSys.DEBUG) {
+    		System.out.println("number of points: "+Robot.serialSys.getVisionPacket().length);
     		System.out.println(Arrays.toString(Robot.serialSys.getVisionPacket()));
-    		Robot.serialSys.sendVisionPacket(Robot.serialSys.getVisionPacket());
+    		
+    	}
+    //	Robot.serialSys.sendVisionPacket(Robot.serialSys.getVisionPacket());
     }
 
     // Make this return true when this Command no longer needs to run execute()
