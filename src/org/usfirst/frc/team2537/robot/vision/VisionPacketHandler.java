@@ -7,28 +7,33 @@ import org.usfirst.frc.team2537.robot.Robot;
 public class VisionPacketHandler {
 
 	public static String encodeVisionPacket(Point[] visionPackets) {
-		String stringToOutput="<";
-		for (int i=0; i < visionPackets.length; i++) {
-			stringToOutput+=visionPackets[i].outputPacket();
+		String stringToOutput = "<";
+		for (int i = 0; i < visionPackets.length; i++) {
+			stringToOutput += visionPackets[i].outputPacket();
 		}
-		stringToOutput+=">";
+		stringToOutput += ">";
 		return stringToOutput;
 	}
-	public static Point[] decodeVisionPacket(String packetToDecode) {
+
+	public static Target[] decodeVisionPacket(String packetToDecode) {
 		if (Robot.serialSys.DEBUG)
-			System.out.println("original string: "+packetToDecode);
-		ArrayList<Point>visionPackets = new ArrayList<>();
-		
-		while(packetToDecode.contains("|")) {
-			String stringX = packetToDecode.substring(0, packetToDecode.indexOf(":"));
-			String stringY = packetToDecode.substring(packetToDecode.indexOf(":") + 1, packetToDecode.indexOf("|"));
-			int x=Integer.valueOf(stringX);
-			int y = Integer.valueOf(stringY);
-			Point visionPacketObject = new Point(x, y);
-			visionPackets.add(visionPacketObject);
-			packetToDecode=packetToDecode.substring(packetToDecode.indexOf("|")+1, packetToDecode.length());
-			
+			System.out.println("original string: " + packetToDecode);
+		ArrayList<Target> targets = new ArrayList<>();
+		while (packetToDecode.contains("~")) {
+			String singleTarget = packetToDecode.substring(0, packetToDecode.indexOf("~"));
+			ArrayList<Point> visionPackets = new ArrayList<>();
+			while (singleTarget.contains("|")) {
+				String stringX = singleTarget.substring(0, singleTarget.indexOf(":"));
+				String stringY = singleTarget.substring(singleTarget.indexOf(":") + 1, singleTarget.indexOf("|"));
+				int x = Integer.valueOf(stringX);
+				int y = Integer.valueOf(stringY);
+				Point visionPacketObject = new Point(x, y);
+				visionPackets.add(visionPacketObject);
+				singleTarget = singleTarget.substring(singleTarget.indexOf("|") + 1, singleTarget.length());
+			}
+			targets.add(new Target(visionPackets.toArray(new Point[visionPackets.size()])));
+			packetToDecode = packetToDecode.substring(packetToDecode.indexOf("~") + 1, packetToDecode.length());
 		}
-		return visionPackets.toArray(new Point[visionPackets.size()]);
+		return targets.toArray(new Target[targets.size()]);
 	}
 }

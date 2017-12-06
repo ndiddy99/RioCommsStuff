@@ -14,7 +14,6 @@ public class SerialSubsystem extends Subsystem {
 		serial = new SerialPort(BAUDRATE, Port.kMXP);
 		protocolHandler=new ProtocolHandler();
 		setDefaultCommand(new ReadSerialCommand()); //automatically adds packets to the buffer
-		serial.flush();
 	}
 	
 	public void addToBuffer() { //should run periodically
@@ -29,11 +28,11 @@ public class SerialSubsystem extends Subsystem {
 			}
 		}
 	}
-	public Point[] getVisionPacket() {
+	public Target[] getVisionPacket() {
 		if (!protocolHandler.getLastString().equals("")) 
 			return VisionPacketHandler.decodeVisionPacket(protocolHandler.getLastString());
 		else
-			return new Point[0];
+			return new Target[0];
 	}
 	public void sendVisionPacket(Point[] packetsToSend) {
 		serial.writeString(VisionPacketHandler.encodeVisionPacket(packetsToSend));
