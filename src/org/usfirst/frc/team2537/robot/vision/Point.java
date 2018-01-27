@@ -10,7 +10,7 @@ public class Point {
 	}
 
 	public String outputPacket() {
-		return x + ":" + y + "|";
+		return x + "," + y + "|";
 	}
 
 	public int getX() {

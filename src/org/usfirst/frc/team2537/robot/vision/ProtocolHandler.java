@@ -11,17 +11,16 @@ public class ProtocolHandler {
 	}
 	/*
 	 * Example packet of the protocol we're using:
-	 *  <Val1:Val2|~Val3:Val4|Val5:Val6|)
-	 *  pretty much, the less than symbols frame the packets
-	 *  the val1, etc text is values (must be ints)
-	 *  the pipes separate values
-	 *  tildes separate different targets
+	 *  >x1,y1|x2,y2#x1,y1|x2,y2>
+	 *  pretty much, the greater than symbols frame the packets
+	 *  pipes separate points
+	 *  the hashtag separates objects
 	 */
 	public void addToBuffer(String stringToAppend) {
 
 		for (int i=0; i < stringToAppend.length();i++) {
 			char charToAppend=stringToAppend.charAt(i);
-			if (charToAppend=='<') {  //is current character opening character?
+			if (charToAppend=='>') {  //is current character opening character?
 				buffer="";	//if yes, reset the buffer
 				lastCompletedString=buffer;
 			}
